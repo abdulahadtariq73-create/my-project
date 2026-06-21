@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+
+.swiper-button-next,
+.swiper-button-prev {
+  width: 35px !important;
+  height: 35px !important;
+  color: white !important;
+  
+  background-color: gray;
+  border-radius: 50%;
+   
+  transform: scale(0.8);
+}
+
+
+#image{
+  background-color: black !important ;
+}
