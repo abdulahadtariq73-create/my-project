@@ -7,6 +7,7 @@ import {
   FaCog,
   FaBell,
   FaPlusSquare,
+  FaIdeal,
 } from "react-icons/fa";
 import { MdLogin } from "react-icons/md";
 import { CiLogout } from "react-icons/ci";
@@ -45,6 +46,14 @@ const Sidebar = () => {
         >
           <RiCellphoneFill size={20} />
           Cell-Phone-Product
+        </NavLink>
+
+         <NavLink
+          to="/dashboard/dealproduct"
+          className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-700"
+        >
+          <FaIdeal size={20} />
+          Deal-Products
         </NavLink>
 
         <NavLink

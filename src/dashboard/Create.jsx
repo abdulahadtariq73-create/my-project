@@ -82,6 +82,19 @@ const Create = () => {
             />
           </Form.Item>
 
+          {category === "dealproduct" && (
+  <Form.Item
+    label="Deal Price"
+    name="dealPrice"
+    rules={[{ required: true }]}
+  >
+    <InputNumber min={0} style={{ width: "100%" }} />
+  </Form.Item>
+)}
+
+
+
+
           <Form.Item
             label="Rating"
             name="rating"

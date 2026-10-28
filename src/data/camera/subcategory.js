@@ -1,4 +1,5 @@
 import Cellphone from "../../dashboard/Cellphone";
+import Dealproducts from "../../dashboard/Dealproducts";
 
 const subcategory ={
   audio: [
@@ -20,6 +21,11 @@ const subcategory ={
     "samsung",
     "ipaid"
 
+  ],
+  dealproduct:[
+    "dealspeaker",
+    "dealphone",
+    "dealcamera"
   ]
 };
 

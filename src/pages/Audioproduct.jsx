@@ -1,49 +1,39 @@
-import Mainlayout from "../component/Mainlayout";
+﻿import Mainlayout from '../component/Mainlayout';
+import axios from 'axios';
+import { Spin } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { FaStar } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import dealData from '../data/deal/deal';
 
-import axios from "axios";
+const fallbackAudioProducts = [
+  { id: 'audio-1', name: 'Wireless Speaker', price: 34999, rating: 5, image: dealData[5].image1, subcategory: 'speaker' },
+  { id: 'audio-2', name: 'Home Audio Pro', price: 28999, rating: 4, image: dealData[9].image1, subcategory: 'Homeaudio' },
+  { id: 'audio-3', name: 'Noise Cancelling Headphone', price: 31999, rating: 5, image: dealData[8].image1, subcategory: 'headphone' },
+  { id: 'audio-4', name: 'Bluetooth Speaker', price: 19999, rating: 4, image: dealData[6].image1, subcategory: 'speaker' },
+  { id: 'audio-5', name: 'Studio Headset', price: 25999, rating: 5, image: dealData[7].image1, subcategory: 'headphone' },
+  { id: 'audio-6', name: 'Smart Soundbar', price: 42999, rating: 5, image: dealData[1].image1, subcategory: 'Homeaudio' },
+];
 
-import { Spin } from "antd";
-
-import React, { useEffect, useState } from "react";
-import { FaStar } from "react-icons/fa";
-import { Link } from "react-router-dom";
 const Audioproduct = () => {
-
-  
-
-
-   
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-
-
-
 
   const getallproduct = async () => {
     setLoading(true);
 
     try {
-      const response = await axios.get("https://6a2b211eb687a7d5cbc4e1f3.mockapi.io/product");
+      const response = await axios.get('https://6a2b211eb687a7d5cbc4e1f3.mockapi.io/product');
+      const audioproduct = response.data.filter((item) => {
+        const typeText = String(item.type || '').toLowerCase();
+        return typeText.includes('audio') || typeText.includes('speaker') || typeText.includes('headphone');
+      });
 
-      const audioproduct = response.data.filter(
-        (item) => item.type === "audio",
-      );
-      setProducts(audioproduct);
+      setProducts(audioproduct.length ? audioproduct : fallbackAudioProducts);
     } catch (error) {
-      console.log(error);
+      setProducts(fallbackAudioProducts);
     } finally {
       setLoading(false);
-    } 
-  }
-
-  const deleteitem = async (id) => {
-    try {
-      await axios.delete(
-        `https://6a2b211eb687a7d5cbc4e1f3.mockapi.io/product/${id}`,
-      );
-      getallproduct();
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -51,44 +41,28 @@ const Audioproduct = () => {
     getallproduct();
   }, []);
 
-  const speakers = products.filter((item) => item.subcategory === "speaker");
-
-  const Homeaudio = products.filter((item) => item.subcategory === "Homeaudio");
-
-  const headphone = products.filter((item) => item.subcategory === "headphone");
+  const speakers = products.filter((item) => String(item.subcategory || '').toLowerCase().includes('speaker'));
+  const Homeaudio = products.filter((item) => String(item.subcategory || '').toLowerCase().includes('homeaudio') || String(item.subcategory || '').toLowerCase().includes('home'));
+  const headphone = products.filter((item) => String(item.subcategory || '').toLowerCase().includes('headphone'));
 
   const renderProducts = (data) =>
     data.map((product) => (
-      <div
-        key={product.id}
-        className="border border-gray-400 p-4 bg-gradient-to-l from-black to-green-700 rounded-lg group relative"
-      >
-        <h1 className="text-center text-2xl text-white">{product.name}</h1>
-
-        <div className=" text-white  bg-blue-400 flex justify-center items-center absolute left-1/2 top-1/2 transition-all duration-300 rounded-[4px] px-4 opacity-0 group-hover:opacity-100  ">
-          <Link to={`/products/${product.id}`}>View</Link>
+      <div key={product.id} className="overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+        <div className="rounded-2xl bg-slate-50 p-3">
+          <img src={product.image} alt={product.name} className="h-44 w-full rounded-xl object-cover" />
         </div>
 
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-48 object-cover mt-3"
-        />
+        <div className="mt-4 flex items-center justify-between gap-3">
+          <h3 className="text-base font-bold text-slate-900">{product.name}</h3>
+          <Link to={`/products/${product.id}`} className="rounded-full bg-sky-600 px-3 py-1 text-xs font-semibold text-white hover:bg-sky-700">
+            View
+          </Link>
+        </div>
 
-        <p className="text-center text-red-500 font-semibold mt-2">
-          PKR {product.price}
-        </p>
-
-        <div className="flex justify-center gap-1 mt-2">
+        <p className="mt-3 text-xl font-black text-red-500">PKR {product.price}</p>
+        <div className="mt-3 flex gap-1">
           {[1, 2, 3, 4, 5].map((star) => (
-            <FaStar
-              key={star}
-              className={
-                star <= Number(product.rating)
-                  ? "text-yellow-400"
-                  : "text-gray-400"
-              }
-            />
+            <FaStar key={star} className={star <= Number(product.rating) ? 'text-yellow-400' : 'text-slate-300'} />
           ))}
         </div>
       </div>
@@ -96,40 +70,34 @@ const Audioproduct = () => {
 
   return (
     <Mainlayout>
-      <div className="mt-5 px-5 bg-gradient-to-l from-black to-gray-500">
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl text-white">Audio Products</h1>
+      <div className="section-shell py-10">
+        <div className="mb-8">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-sky-600">Audio collection</p>
+          <h1 className="mt-3 text-4xl font-black text-slate-900">Audio Products</h1>
         </div>
 
         {loading ? (
-          <div className="text-center mt-5">
-            <Spin />
+          <div className="mt-10 text-center">
+            <Spin size="large" />
           </div>
         ) : (
-          <div>
-            <h2 className="text-3xl text-white mt-10 mb-5">Home-Audio</h2>
+          <div className="space-y-10">
+            <section>
+              <h2 className="mb-5 text-2xl font-bold text-slate-900">Home Audio</h2>
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">{renderProducts(Homeaudio)}</div>
+            </section>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {renderProducts(Homeaudio)}
-            </div>
+            <section>
+              <h2 className="mb-5 text-2xl font-bold text-slate-900">Speakers</h2>
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">{renderProducts(speakers)}</div>
+            </section>
 
-            {/* Speakers */}
-            <h2 className="text-3xl text-white mt-10 mb-5">Speakers</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {renderProducts(speakers)}
-            </div>
-
-            {/* Headphones */}
-            <h2 className="text-3xl text-white mt-10 mb-5">Headphones</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {renderProducts(headphone)}
-            </div>
+            <section>
+              <h2 className="mb-5 text-2xl font-bold text-slate-900">Headphones</h2>
+              <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">{renderProducts(headphone)}</div>
+            </section>
           </div>
         )}
-
-        {/* homeaudio */}
       </div>
     </Mainlayout>
   );

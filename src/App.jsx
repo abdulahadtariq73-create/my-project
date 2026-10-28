@@ -1,7 +1,3 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
 import "./App.css";
 import Home from "./pages/Home";
 import { Routes, Route } from "react-router-dom";
@@ -18,34 +14,37 @@ import Cameras from "./pages/Cameras";
 import Productdetails from "./pages/Productdetails";
 import Cart from "./pages/Cart";
 import Cellphones from "./pages/Cellphones";
+import Dealproducts from "./dashboard/Dealproducts";
+import Deals from "./pages/Deals";
+import Featured from "./pages/Featured";
+
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/audioproducts" element={<Audioproduct/>}/>
-        <Route path="/cameras" element={<Cameras/>}/>
-        <Route path="/cellphone" element={<Cellphones/>}/>
-         <Route path="/products/:id" element={<Productdetails/>}/>
-         <Route path="/cart" element={<Cart/>}/>
-        
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/deals" element={<Deals />} />
+      <Route path="/featured" element={<Featured />} />
+      <Route path="/audio" element={<Audioproduct />} />
+      <Route path="/audioproducts" element={<Audioproduct />} />
+      <Route path="/camera" element={<Cameras />} />
+      <Route path="/cameras" element={<Cameras />} />
+      <Route path="/cellphone" element={<Cellphones />} />
+      <Route path="/cellphones" element={<Cellphones />} />
+      <Route path="/products/:id" element={<Productdetails />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/login" element={<Login />} />
 
-        <Route path="/dashboard" element={<Dashboardlayout />}>
-          <Route path="audio" element={<Audio />} />
-           <Route path="cellphone" element={<Cellphone/>}/>
-          <Route path="camera" element={<Camera />} />
-          <Route path="logout" element={<Logout/>}/>
-           <Route path="/dashboard/:category/create" element={<Create />} />
-          <Route />
-        </Route>
-        <Route path="/login" element={<Login />} />
-        
+      <Route path="/dashboard" element={<Dashboardlayout />}>
+        <Route path="audio" element={<Audio />} />
+        <Route path="camera" element={<Camera />} />
+        <Route path="cellphone" element={<Cellphone />} />
+        <Route path="dealproduct" element={<Dealproducts />} />
+        <Route path="logout" element={<Logout />} />
+        <Route path=":category/create" element={<Create />} />
+      </Route>
 
-        <Route path="*" element={<Notfound />} />
-      </Routes>
-    </>
+      <Route path="*" element={<Notfound />} />
+    </Routes>
   );
 }
 

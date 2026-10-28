@@ -8,6 +8,8 @@ const Cellphone = () => {
 
   const [products,setProducts] = useState([])
   const [ loading ,setLoading] = useState(false)
+
+
   const getAllproducts = async () =>{
 
     setLoading(true)
